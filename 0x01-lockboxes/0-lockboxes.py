@@ -1,20 +1,33 @@
+
+
+#!/usr/bin/python3
+"""
+Task 0: Lockboxes
+"""
+
+
 def canUnlockAll(boxes):
     """
-    A function that determines if all boxes can be opened.
-    
-    Given a list of boxes, where each box is numbered sequentially from 0 to n-1, 
-    and each box may contain keys to open other boxes, the function returns 
-    True if all boxes can be opened, and False otherwise.
-    
-    :param boxes: a list of lists where each list represents a box
-    :type boxes: list
-    :return: True if all boxes can be opened, False otherwise
-    :rtype: bool
+    Determines if all boxes can be opened
     """
-    n = len(boxes)
-    keys = {0}
-    for i in range(n):
-        if i in keys:
-            keys.update(boxes[i])
-    return len(keys) == n
+    if boxes is None or len(boxes) is 0:
+        return False
 
+    status = ["T"]
+
+    for box in range(1, len(boxes)):
+        status.append("F")
+
+    for box in range(0, len(boxes)):
+        if (status[box] is "T" or box is 0):
+            for key in boxes[box]:
+                if int(key) < len(boxes) and status[key] is "F":
+                    for k in boxes[key]:
+                        if k < len(boxes):
+                            status[k] = "T"
+                if key < len(boxes):
+                    status[key] = "T"
+
+    if "F" in status:
+        return False
+    return True
